@@ -77,6 +77,7 @@
             "C#",
             "Node.js",
             "Angular",
+            "React",    
             "MongoDB",
             "Git",
             "JavaScript",
@@ -252,7 +253,6 @@
                     </p>
 
                     <div className="mt-4 flex gap-3 flex-wrap">
-                      <a href={RESUME.website} target="_blank" rel="noreferrer" className="underline">Personal site</a>
                       <a href={RESUME.github} target="_blank" rel="noreferrer" className="underline">GitHub</a>
                       <a href={RESUME.linkedin} target="_blank" rel="noreferrer" className="underline">LinkedIn</a>
                     </div>
@@ -338,17 +338,6 @@
                         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Ask about my experience, skills, or research" className="flex-1 bg-transparent outline-none px-2" />
                         <button type="submit" className="px-3 py-1 rounded bg-slate-900 text-white dark:bg-slate-200 dark:text-slate-900">Ask</button>
                       </form>
-                    </div>
-
-                    <div className="mt-2 text-xs opacity-70">This is a local demo chatbot that answers questions using the information on this page. To connect a real LLM, follow the README instructions below.</div>
-                  </div>
-
-                  <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow text-sm">
-                    <h3 className="font-semibold">Resume / Deploy</h3>
-                    <p className="mt-2 opacity-80">This site is ready to deploy. Download the resume, or click the button below to copy contact information.</p>
-                    <div className="mt-3 flex gap-2">
-                      <a href="/resume.pdf" download className="px-3 py-2 border rounded-md">Download Resume</a>
-                      <button onClick={() => copy(RESUME.website)} className="px-3 py-2 rounded bg-slate-900 text-white">Copy site URL</button>
                     </div>
                   </div>
                 </aside>
