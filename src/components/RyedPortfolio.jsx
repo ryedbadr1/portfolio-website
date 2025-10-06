@@ -1,7 +1,6 @@
         import React, { useState, useEffect, useRef } from "react";
         import { motion } from "framer-motion";
-        import { Sun, Moon, Download, Mail, GitHub, Linkedin } from "lucide-react";
-        // NOTE: This component uses TailwindCSS classes. Make sure Tailwind is configured in your project.
+        import { Sun, Moon, Download, Mail, Github, Linkedin } from "lucide-react";
 
         const RESUME = {
           name: "Ryed Badr",
