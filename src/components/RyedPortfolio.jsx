@@ -401,7 +401,7 @@ function dynamicSearchAnswer(input) {
               if (CHAT_API_URL) {
                 const payload = {
                   messages: [
-                    { role: "system", content: "You are a helpful portfolio assistant for Ryed Badr. Keep answers concise and relevant to his background." },
+                    { role: "system", content: "You are a helpful portfolio assistant for Ryed Badr. Keep answers concise and relevant to his background. Add line-break spacing between points and try to format response nicely. If the prompt is unrelated to Ryed or his background/skills you are allowed to engage, however, keep responses appropriate and don't be too chatty." },
                     { role: "system", content: `Context: Education=${RESUME.education.degree} @ ${RESUME.education.school}. Experience=${RESUME.experience.map(e=>`${e.role} @ ${e.org}`).join('; ')}. Research=${RESUME.research.map(r=>r.title).join('; ')}. Skills=${RESUME.skills.join(', ')}. Links: DOI https://doi.org/10.1109/ICSME58944.2024.00061, Chicago Journal https://thechicagojournal.com/velocity-quant-trading-group-college-students-innovate-finance-through-ai/` },
                     ...messages.slice(-6).map(m => ({ role: m.from === 'you' ? 'user' : 'assistant', content: m.text || '' })),
                     { role: "user", content: query }
@@ -433,7 +433,7 @@ function dynamicSearchAnswer(input) {
                 }
               } else if (GEMINI_KEY) {
                 const prompt = [
-                  "You are a helpful portfolio assistant for Ryed Badr. Keep answers concise and relevant to his background. Add spacing between points/try to format response nicely.",
+                  "You are a helpful portfolio assistant for Ryed Badr. Keep answers concise and relevant to his background. Add line-break spacing between points and try to format response nicely. If the prompt is unrelated to Ryed or his background/skills you are allowed to engage, however, keep responses appropriate and don't be too chatty.",
                   `Context: Education=${RESUME.education.degree} @ ${RESUME.education.school}. Experience=${RESUME.experience.map(e=>`${e.role} @ ${e.org}`).join('; ')}. Research=${RESUME.research.map(r=>r.title).join('; ')}. Skills=${RESUME.skills.join(', ')}. Links: DOI https://doi.org/10.1109/ICSME58944.2024.00061, Chicago Journal https://thechicagojournal.com/velocity-quant-trading-group-college-students-innovate-finance-through-ai/`,
                   ...messages.slice(-4).map(m => `${m.from === 'you' ? 'User' : 'Assistant'}: ${m.text || ''}`),
                   `User: ${query}`
