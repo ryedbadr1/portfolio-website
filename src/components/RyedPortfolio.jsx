@@ -214,7 +214,7 @@
                 </div>
                 <div className="flex items-center gap-4">
                   <a href={RESUME.github} aria-label="GitHub" className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
-                    <GitHub size={18} />
+                    <Github size={18} />
                   </a>
                   <a href={RESUME.linkedin} aria-label="LinkedIn" className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
                     <Linkedin size={18} />
