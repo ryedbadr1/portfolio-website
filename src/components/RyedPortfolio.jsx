@@ -1,4 +1,3 @@
-\
         import React, { useState, useEffect, useRef } from "react";
         import { motion } from "framer-motion";
         import { Sun, Moon, Download, Mail, GitHub, Linkedin } from "lucide-react";
@@ -355,8 +354,4 @@
                   </div>
                 </aside>
               </main>
-
-              <footer className="max-w-6xl mx-auto p-6 text-center text-sm opacity-70">
-                Built with ❤️ — demo portfolio for {RESUME.name}. Replace placeholder links (e.g. /resume.pdf) with real deploy paths.
-              </footer>
             </div>
