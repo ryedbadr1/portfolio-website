@@ -22,6 +22,7 @@
               org: "ProvenAir Technologies",
               location: "Chicago, IL",
               dates: "May 2025 – Present",
+              skills: ["C#", "Angular", "SQL", "Git"],
               bullets: [
                 "Shipped 30+ production features across full-stack systems (C#, Angular, PostgreSQL)",
                 "Engineered scalable notification and file-handling systems",
@@ -33,6 +34,7 @@
               org: "Velocity Quant Trading Group",
               location: "USA & UK",
               dates: "Jan 2023 – Mar 2025",
+              skills: ["C++", "Python", "Git", "MongoDB"],
               bullets: [
                 "Led a hedge fund of 8 people centered on automated, algorithmic trading models",
                 "Developed base trading models and led quant engineers to optimize these strategies with AI",
@@ -44,10 +46,33 @@
               org: "Badr Software Development",
               location: "IL",
               dates: "Jan 2020 – Dec 2023",
+              skills: ["Python", "HTML", "CSS", "Git", "Node.js", "MongoDB", "React", "C"],
               bullets: [
                 "Automated 50% of administrative tasks for a recruiting firm, saving $40,000 annually",
                 "Deployed a Node.js + MongoDB web app used by 4000+ UIUC students",
                 "Built an AI app using TensorFlow to detect eye diseases from images",
+              ],
+            },
+            {
+              role: "Freelance Software Engineer",
+              org: "Self-Employed",
+              location: "IL",
+              dates: "May 2020 – Aug 2022",
+              skills: ["C++", "Python", "JavaScript", "HTML", "CSS", "MongoDB"],
+              bullets: [
+                "Crafted customized software-based solutions for local businesses",
+                "Deployed software to manage students of a tutoring business, and automated mundane tutor tasks",
+                "Produced multiple inventory management systems with features to forecast future supply and demand",
+              ],
+            },
+            {
+              role: "Software Programming Instructor",
+              org: "Code Ninjas",
+              location: "Naperville, IL",
+              dates: "May 2020 – Aug 2022",
+              skills: ["JavaScript", "Python"],
+              bullets: [
+                "Taught kids to code and created lesson plans",
               ],
             },
           ],
@@ -56,6 +81,7 @@
               title: "ADAPT Lab - Evolvable Compiler Construction",
               org: "University of Illinois",
               dates: "May 2024 – Sept 2024",
+              skills: ["Assembly", "C"],
               bullets: [
                 "Worked on evolvable compiler construction with ML and formal methods in x86 Assembly and C",
                 "Responsible for investigating effectiveness of a Gemini-based environment to optimize compiler evolution",
@@ -65,6 +91,7 @@
               title: "GlueTest / Department of Computer Science",
               org: "University of Illinois",
               dates: "June 2023 – Sept 2023",
+              skills: ["Java", "Python", "Git"],
               bullets: [
                 "Translated Apache Commons from Java to Python and co-authored GlueTest (IEEE 2024)",
                 "Leveraged GraalVM to preserve Java tests and improve cross-language testing accuracy",
@@ -88,6 +115,41 @@
             "CSS",
             "Assembly",
           ],
+          hobbies: {
+            sports: {
+              title: "Sports & Athletics",
+              description: "Active in multiple sports including soccer, football, and basketball. Love the competitive spirit and teamwork these sports bring.",
+              details: ["Soccer", "Football", "Basketball"]
+            },
+            entertainment: {
+              title: "Sports Entertainment",
+              description: "Passionate follower of professional sports leagues and motorsports.",
+              details: ["NFL", "Formula 1"]
+            },
+            automotive: {
+              title: "Project Car",
+              description: "Working on a Honda S2000 with extensive modifications including supercharger, fuel injectors, full exhaust system, air intake, flywheel upgrade, and regular maintenance.",
+              details: ["Supercharger installation", "Fuel injectors upgrade", "Full exhaust system", "Air intake modification", "Flywheel upgrade", "Regular maintenance"]
+            },
+            development: {
+              title: "Building Random Apps",
+              description: "Love creating applications and exploring new technologies through side projects.",
+              details: ["Mobile apps", "Web applications", "Automation tools", "AI/ML projects"]
+            },
+            cooking: {
+              title: "Cooking",
+              description: "Enjoy experimenting with different cuisines and cooking techniques.",
+              details: ["International cuisine", "Grilling", "Baking", "Meal prep"]
+            },
+            travel: {
+              title: "Travel & Exploration",
+              description: "Passionate about exploring the world and experiencing different cultures. Have traveled extensively across the US and internationally.",
+              details: {
+                domestic: ["Alaska", "Hawaii", "Many of the 50 US states"],
+                international: ["Zambia", "Tanzania", "Egypt", "Ethiopia", "Germany", "France", "Turkey", "United Kingdom", "Canada", "Pakistan", "Saudi Arabia", "UAE"]
+              }
+            }
+          },
         };
 
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
@@ -178,6 +240,22 @@ const FAQ = [
             q: /website|portfolio|resume/i,
             a: `Personal website: ${RESUME.website} — resume available for download.`,
           },
+          {
+            q: /hobbies|interests|sports|car|travel|cooking|apps/i,
+            a: () => {
+              const hobbyCategories = Object.values(RESUME.hobbies);
+              const randomHobby = pick(hobbyCategories);
+              const travelInfo = RESUME.hobbies.travel;
+              const carInfo = RESUME.hobbies.automotive;
+              
+              const responses = [
+                `My hobbies include playing sports (soccer, football, basketball), watching NFL and F1, working on my Honda S2000 project car with supercharger and other mods, building random apps, cooking, and traveling extensively.`,
+                `I love sports - playing soccer, football, and basketball, plus watching NFL and Formula 1. I'm also into automotive work on my Honda S2000, app development, cooking, and I've traveled to many countries including Zambia, Tanzania, Egypt, Germany, France, Turkey, UK, and more.`,
+                `Beyond coding, I enjoy competitive sports, motorsports (NFL/F1), automotive projects (Honda S2000 with supercharger), cooking, and exploring the world - I've been to places like Alaska, Hawaii, Egypt, Germany, France, and many others.`
+              ];
+              return pick(responses);
+            },
+          },
         ];
 
 function getSuggestions(input) {
@@ -194,7 +272,10 @@ function getSuggestions(input) {
   if (/skills|stack|languages?/.test(low)) {
     return ["top languages", "backend", "frontend", "ml/ai"];
   }
-  return ["experience", "skills", "research"];
+  if (/hobbies|interests|sports|car|travel|cooking|apps/.test(low)) {
+    return ["sports", "honda s2000", "travel destinations", "cooking"];
+  }
+  return ["experience", "skills", "research", "hobbies"];
 }
 
 function dynamicSearchAnswer(input) {
@@ -204,18 +285,22 @@ function dynamicSearchAnswer(input) {
     if (
       e.role.toLowerCase().includes(q) ||
       e.org.toLowerCase().includes(q) ||
-      e.bullets.some((b) => String(b).toLowerCase().includes(q))
+      e.bullets.some((b) => String(b).toLowerCase().includes(q)) ||
+      (e.skills && e.skills.some(skill => skill.toLowerCase().includes(q)))
     ) {
-      hits.push(`${e.role} @ ${e.org}`);
+      const skillsText = e.skills ? ` (${e.skills.join(', ')})` : '';
+      hits.push(`${e.role} @ ${e.org}${skillsText}`);
     }
   });
   RESUME.research.forEach((r) => {
     if (
       r.title.toLowerCase().includes(q) ||
       r.org.toLowerCase().includes(q) ||
-      r.bullets.some((b) => String(b).toLowerCase().includes(q))
+      r.bullets.some((b) => String(b).toLowerCase().includes(q)) ||
+      (r.skills && r.skills.some(skill => skill.toLowerCase().includes(q)))
     ) {
-      hits.push(`${r.title} (${r.org})`);
+      const skillsText = r.skills ? ` (${r.skills.join(', ')})` : '';
+      hits.push(`${r.title} @ ${r.org}${skillsText}`);
     }
   });
   if (hits.length > 0) {
@@ -241,6 +326,7 @@ function dynamicSearchAnswer(input) {
     experience: ["intern", "provenair", "velocity", "badr", "founder", "engineer", "hedge", "fund", "roi", "journal"],
     research: ["research", "gluetest", "compiler", "ieee", "paper", "publication", "doi"],
             skills: RESUME.skills.map((s) => s.toLowerCase()),
+            hobbies: ["hobbies", "interests", "sports", "soccer", "football", "basketball", "nfl", "f1", "formula 1", "car", "honda", "s2000", "supercharger", "travel", "cooking", "apps"],
             contact: ["email", "contact", "hire", "reach"],
           };
           const low = input.toLowerCase();
@@ -256,6 +342,8 @@ function dynamicSearchAnswer(input) {
             return `Research highlights: ${RESUME.research.map((r) => r.title).sort(() => Math.random() - 0.5).join("; ")}`;
                   case "skills":
             return `Techs: ${RESUME.skills.slice().sort(() => Math.random() - 0.5).slice(0, 8).join(", ")}`;
+                  case "hobbies":
+            return `My hobbies include sports (soccer, football, basketball), watching NFL/F1, working on my Honda S2000 project car, building apps, cooking, and extensive travel including Alaska, Hawaii, and many international destinations.`;
                   case "contact":
                     return `Email: ${RESUME.email}`;
                   default:
@@ -295,8 +383,13 @@ function dynamicSearchAnswer(input) {
           const { scrollYProgress } = useScroll();
           const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 20, restDelta: 0.001 });
           const CHAT_API_URL = import.meta.env && import.meta.env.VITE_CHAT_API_URL;
-          const GEMINI_KEY = "AIzaSyC3PWXgS3yhdvd10_nWhcho0orPgtcQSRY";
+          const GEMINI_KEY = import.meta.env && import.meta.env.VITE_GEMINI_KEY;
           const GEMINI_MODEL = 'gemini-2.0-flash';
+
+          const [cursor, setCursor] = useState({ x: 0, y: 0 });
+          const [cursorTrail, setCursorTrail] = useState({ x: 0, y: 0 });
+          const [cursorState, setCursorState] = useState('default');
+          const [isClicking, setIsClicking] = useState(false);
 
           const aboutRef = useRef(null);
           const expRef = useRef(null);
@@ -311,6 +404,9 @@ function dynamicSearchAnswer(input) {
             emailCopied: false,
             githubVisited: false,
             linkedinVisited: false,
+            featuredLink1: false,
+            featuredLink2: false,
+            scrolledToBottom: false,
             siteCompleted: false,
           };
 
@@ -338,15 +434,26 @@ function dynamicSearchAnswer(input) {
             });
           }
 
-          function markSectionViewed(key) { mark(key); }
+          function markSectionViewed(key) { mark(key); console.log(GEMINI_KEY); }
 
           function completionPercent(map = progressMap) {
-            const keys = Object.keys(PROGRESS_TEMPLATE);
+            const keys = Object.keys(PROGRESS_TEMPLATE).filter(k => k !== 'siteCompleted');
             const done = keys.filter((k) => map[k]).length;
             return Math.round((done / keys.length) * 100);
           }
 
-          useEffect(() => { loadProgress(); }, []);
+          useEffect(() => { 
+            loadProgress(); 
+            const checkInitialScroll = () => {
+              const scrollTop = window.scrollY;
+              const windowHeight = window.innerHeight;
+              const documentHeight = document.documentElement.scrollHeight;
+              if (scrollTop + windowHeight >= documentHeight - 200) {
+                mark('scrolledToBottom');
+              }
+            };
+            setTimeout(checkInitialScroll, 100);
+          }, []);
 
 
           useEffect(() => {
@@ -358,6 +465,14 @@ function dynamicSearchAnswer(input) {
           useEffect(() => {
             function onScroll() {
               setShowTop(window.scrollY > 300);
+              
+              const scrollTop = window.scrollY;
+              const windowHeight = window.innerHeight;
+              const documentHeight = document.documentElement.scrollHeight;
+              
+              if (scrollTop + windowHeight >= documentHeight - 200) {
+                mark('scrolledToBottom');
+              }
             }
             onScroll();
             window.addEventListener("scroll", onScroll, { passive: true });
@@ -382,6 +497,25 @@ function dynamicSearchAnswer(input) {
           }, []);
 
           useEffect(() => {
+            const handleMouseEnter = (e) => onMouseEnter(e);
+            const handleMouseLeave = () => onMouseLeave();
+            const handleMouseDown = () => onMouseDown();
+            const handleMouseUp = () => onMouseUp();
+
+            document.addEventListener('mouseenter', handleMouseEnter, true);
+            document.addEventListener('mouseleave', handleMouseLeave, true);
+            document.addEventListener('mousedown', handleMouseDown);
+            document.addEventListener('mouseup', handleMouseUp);
+
+            return () => {
+              document.removeEventListener('mouseenter', handleMouseEnter, true);
+              document.removeEventListener('mouseleave', handleMouseLeave, true);
+              document.removeEventListener('mousedown', handleMouseDown);
+              document.removeEventListener('mouseup', handleMouseUp);
+            };
+          }, []);
+
+          useEffect(() => {
             const pct = completionPercent();
             if (pct === 100 && !progressMap.siteCompleted) {
               setCelebrate(true);
@@ -402,7 +536,7 @@ function dynamicSearchAnswer(input) {
                 const payload = {
                   messages: [
                     { role: "system", content: "You are a helpful portfolio assistant for Ryed Badr. Keep answers concise and relevant to his background. Add line-break spacing between points and try to format response nicely. If the prompt is unrelated to Ryed or his background/skills you are allowed to engage, however, keep responses appropriate and don't be too chatty." },
-                    { role: "system", content: `Context: Education=${RESUME.education.degree} @ ${RESUME.education.school}. Experience=${RESUME.experience.map(e=>`${e.role} @ ${e.org}`).join('; ')}. Research=${RESUME.research.map(r=>r.title).join('; ')}. Skills=${RESUME.skills.join(', ')}. Links: DOI https://doi.org/10.1109/ICSME58944.2024.00061, Chicago Journal https://thechicagojournal.com/velocity-quant-trading-group-college-students-innovate-finance-through-ai/` },
+                    { role: "system", content: `Context: Education=${RESUME.education.degree} @ ${RESUME.education.school}. Experience=${RESUME.experience.map(e=>`${e.role} @ ${e.org} (Skills: ${e.skills?.join(', ') || 'N/A'})`).join('; ')}. Research=${RESUME.research.map(r=>`${r.title} @ ${r.org} (Skills: ${r.skills?.join(', ') || 'N/A'})`).join('; ')}. Skills=${RESUME.skills.join(', ')}. Hobbies: ${Object.entries(RESUME.hobbies).map(([key, hobby]) => `${hobby.title}: ${hobby.description}${key === 'travel' ? ` (Domestic: ${hobby.details.domestic.join(', ')}; International: ${hobby.details.international.join(', ')})` : ` (${hobby.details.join(', ')})`}`).join('; ')}. Links: DOI https://doi.org/10.1109/ICSME58944.2024.00061, Chicago Journal https://thechicagojournal.com/velocity-quant-trading-group-college-students-innovate-finance-through-ai/` },
                     ...messages.slice(-6).map(m => ({ role: m.from === 'you' ? 'user' : 'assistant', content: m.text || '' })),
                     { role: "user", content: query }
                   ]
@@ -434,7 +568,7 @@ function dynamicSearchAnswer(input) {
               } else if (GEMINI_KEY) {
                 const prompt = [
                   "You are a helpful portfolio assistant for Ryed Badr. Keep answers concise and relevant to his background. Add line-break spacing between points and try to format response nicely. If the prompt is unrelated to Ryed or his background/skills you are allowed to engage, however, keep responses appropriate and don't be too chatty.",
-                  `Context: Education=${RESUME.education.degree} @ ${RESUME.education.school}. Experience=${RESUME.experience.map(e=>`${e.role} @ ${e.org}`).join('; ')}. Research=${RESUME.research.map(r=>r.title).join('; ')}. Skills=${RESUME.skills.join(', ')}. Links: DOI https://doi.org/10.1109/ICSME58944.2024.00061, Chicago Journal https://thechicagojournal.com/velocity-quant-trading-group-college-students-innovate-finance-through-ai/`,
+                  `Context: Education=${RESUME.education.degree} @ ${RESUME.education.school}. Experience=${RESUME.experience.map(e=>`${e.role} @ ${e.org} (Skills: ${e.skills?.join(', ') || 'N/A'})`).join('; ')}. Research=${RESUME.research.map(r=>`${r.title} @ ${r.org} (Skills: ${r.skills?.join(', ') || 'N/A'})`).join('; ')}. Skills=${RESUME.skills.join(', ')}. Hobbies: ${Object.entries(RESUME.hobbies).map(([key, hobby]) => `${hobby.title}: ${hobby.description}${key === 'travel' ? ` (Domestic: ${hobby.details.domestic.join(', ')}; International: ${hobby.details.international.join(', ')})` : ` (${hobby.details.join(', ')})`}`).join('; ')}. Links: DOI https://doi.org/10.1109/ICSME58944.2024.00061, Chicago Journal https://thechicagojournal.com/velocity-quant-trading-group-college-students-innovate-finance-through-ai/`,
                   ...messages.slice(-4).map(m => `${m.from === 'you' ? 'User' : 'Assistant'}: ${m.text || ''}`),
                   `User: ${query}`
                 ].filter(Boolean).join('\n');
@@ -487,19 +621,84 @@ function dynamicSearchAnswer(input) {
             const nx = (e.clientX / innerWidth) * 2 - 1;
             const ny = (e.clientY / innerHeight) * 2 - 1;
             setParallax({ x: nx, y: ny });
+
+            setCursor({ x: e.clientX, y: e.clientY });
+            
+            setTimeout(() => {
+              setCursorTrail({ x: e.clientX, y: e.clientY });
+            }, 50);
+          }
+
+          function onMouseEnter(e) {
+            const target = e.target;
+            if (!target || typeof target.tagName !== 'string' || typeof target.closest !== 'function') {
+              setCursorState('default');
+              return;
+            }
+            
+            if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button')) {
+              setCursorState('hover');
+            } else if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+              setCursorState('text');
+            } else {
+              setCursorState('default');
+            }
+          }
+
+          function onMouseLeave() {
+            setCursorState('default');
+          }
+
+          function onMouseDown() {
+            setIsClicking(true);
+            setCursorState('click');
+          }
+
+          function onMouseUp() {
+            setIsClicking(false);
+            setCursorState('default');
           }
 
           return (
             <div onMouseMove={onMouseMove} className="relative min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors overflow-x-clip pt-6 md:pt-8">
+              <div 
+                className={`cursor ${cursorState === 'hover' ? 'cursor-hover' : ''} ${cursorState === 'click' ? 'cursor-click' : ''} ${cursorState === 'text' ? 'cursor-text' : ''} ${isClicking ? 'cursor-pulse' : ''}`}
+                style={{
+                  left: cursor.x - 10,
+                  top: cursor.y - 10,
+                }}
+              />
+              <div 
+                className="cursor-trail"
+                style={{
+                  left: cursorTrail.x - 4,
+                  top: cursorTrail.y - 4,
+                }}
+              />
+              <div 
+                className="cursor-dot"
+                style={{
+                  left: cursor.x - 2,
+                  top: cursor.y - 2,
+                }}
+              />
+              
               <motion.div className="fixed top-0 left-0 right-0 h-1 origin-left z-50 bg-gradient-to-r from-blue-500 via-fuchsia-500 to-emerald-400" style={{ scaleX: progress }} />
               <div className="pointer-events-none absolute inset-0 opacity-60 dark:opacity-40 -z-10 overflow-hidden">
                 <div className="bg-aurora absolute -top-32 -left-24 w-[60vw] h-[60vw]" style={{ transform: `translate3d(${parallax.x * 16}px, ${parallax.y * 10}px, 0)` }} />
                 <div className="bg-aurora absolute bottom-0 right-[-10vw] w-[50vw] h-[50vw]" style={{ transform: `translate3d(${parallax.x * -12}px, ${parallax.y * -8}px, 0)` }} />
               </div>
               <header className="relative z-10 max-w-6xl mx-auto p-6 flex items-center justify-between">
-                <div>
-                  <h1 className="text-2xl font-bold">{RESUME.name}</h1>
-                  <p className="text-sm opacity-80">{RESUME.title} • {RESUME.location}</p>
+                <div className="flex items-center gap-4">
+                  <img 
+                    src="/1663431050866.jpeg" 
+                    alt="Ryed Badr" 
+                    className="w-16 h-16 rounded-full object-cover border-2 border-slate-200 dark:border-slate-700 shadow-sm"
+                  />
+                  <div>
+                    <h1 className="text-2xl font-bold">{RESUME.name}</h1>
+                    <p className="text-sm opacity-80">{RESUME.title} • {RESUME.location}</p>
+                  </div>
                 </div>
                 <div className="flex items-center gap-4">
                   <a href={RESUME.github} aria-label="GitHub" onClick={() => mark("githubVisited")} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
@@ -529,7 +728,7 @@ function dynamicSearchAnswer(input) {
                     <h2 className="text-2xl font-semibold">Ask me anything</h2>
                     <p className="mt-2 text-slate-700 dark:text-slate-300">Below are some sample subjects to ask my chatbot:</p>
                     <div className="mt-4 flex gap-3 flex-wrap">
-                      {['education','experience','research','skills'].map((t) => (
+                      {['education','experience','research','skills','hobbies'].map((t) => (
                         <button key={t} onClick={() => setQuery(t)} className="text-sm rounded-full bg-white/80 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-700 px-3 py-1 hover:shadow">
                           {t}
                         </button>
@@ -541,7 +740,15 @@ function dynamicSearchAnswer(input) {
                       <div ref={chatContainerRef} className="flex-1 p-3 overflow-auto chat-scroll">
                         {messages.map((m, i) => (
                           <motion.div key={i} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className={`mb-2 ${m.from === "you" ? "text-right" : "text-left"}`}>
-                            <div className={`inline-block p-2 rounded ${m.from === "you" ? "bg-slate-900 text-white" : "bg-slate-100 dark:bg-slate-800"}`}>{m.text}</div>
+                            <div className={`inline-block p-2 rounded ${m.from === "you" ? "bg-slate-900 text-white" : "bg-slate-100 dark:bg-slate-800"}`}>
+                              {m.from === "bot" ? (
+                                <div className="whitespace-pre-wrap leading-relaxed">
+                                  {m.text}
+                                </div>
+                              ) : (
+                                m.text
+                              )}
+                            </div>
                           </motion.div>
                         ))}
                         {(!isTyping && chatSuggestions.length > 0) && (
@@ -578,13 +785,13 @@ function dynamicSearchAnswer(input) {
                   <motion.div ref={aboutRef} onViewportEnter={() => markSectionViewed("about")} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 200, damping: 18 }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
                     <h2 className="text-xl font-semibold">About</h2>
                     <p className="mt-2 leading-relaxed text-slate-700 dark:text-slate-300">
-                      Hi! I'm <strong>{RESUME.name}</strong>, a software engineer who likes building stuff. I have broad experience in full-stack systems,
+                      Hi! I'm <strong>Ryed</strong>, a software engineer who likes building stuff. I have broad experience in full-stack systems,
                       algorithm engineering, and applied machine learning. Below are highlights pulled from my resume. Feel free to explore the site or ask my chatbot about me.
                     </p>
 
                     <div className="mt-4 flex gap-3 flex-wrap">
-                      <a href={RESUME.github} target="_blank" rel="noreferrer" className="underline">GitHub</a>
-                      <a href={RESUME.linkedin} target="_blank" rel="noreferrer" className="underline">LinkedIn</a>
+                      <a href={RESUME.github} target="_blank" rel="noreferrer" onClick={() => mark("githubVisited")} className="underline">GitHub</a>
+                      <a href={RESUME.linkedin} target="_blank" rel="noreferrer" onClick={() => mark("linkedinVisited")} className="underline">LinkedIn</a>
                     </div>
                   </motion.div>
 
@@ -604,7 +811,7 @@ function dynamicSearchAnswer(input) {
                         thumbnail: "https://i.postimg.cc/WFNrq7wZ/output-onlinepngtools.png",
                         tags: ["Research", "IEEE", "Software Engineering"],
                       }].map((link, i) => (
-                        <motion.a key={i} href={link.url} target="_blank" rel="noreferrer" whileHover={{ scale: 1.01 }} className="block p-4 border border-slate-100 dark:border-slate-700 rounded-lg bg-white/70 dark:bg-slate-900/50 hover:shadow-md transition-shadow">
+                        <motion.a key={i} href={link.url} target="_blank" rel="noreferrer" onClick={() => mark(`featuredLink${i + 1}`)} whileHover={{ scale: 1.01 }} className="block p-4 border border-slate-100 dark:border-slate-700 rounded-lg bg-white/70 dark:bg-slate-900/50 hover:shadow-md transition-shadow">
                           <div className="aspect-video mb-3 rounded-md overflow-hidden bg-slate-100 dark:bg-slate-800">
                             <img 
                               src={link.thumbnail} 
@@ -667,6 +874,7 @@ function dynamicSearchAnswer(input) {
                     </div>
                   </motion.div>
 
+
                 </section>
 
                 <aside className="space-y-6">
@@ -683,11 +891,223 @@ function dynamicSearchAnswer(input) {
                   </div>
 
                   <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
+                    <h3 className="font-semibold mb-4">Timeline</h3>
+                    <div className="relative">
+                      {(() => {
+                        const parseDate = (dateStr) => {
+                          try {
+                            if (!dateStr) {
+                              return {
+                                start: new Date('2020-01-01'),
+                                end: new Date('2020-01-01')
+                              };
+                            }
+                            
+                            if (dateStr.includes('Present')) {
+                              const [start] = dateStr.split('–').map(s => s.trim());
+                              const startDate = parseMonthYear(start);
+                              return {
+                                start: startDate,
+                                end: new Date('2099-12-31')
+                              };
+                            }
+                            
+                            const [start, end] = dateStr.split('–').map(s => s.trim());
+                            const startDate = parseMonthYear(start);
+                            const endDate = end ? parseMonthYear(end) : new Date('2099-12-31');
+                            
+                            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+                              return {
+                                start: new Date('2020-01-01'),
+                                end: new Date('2020-01-01')
+                              };
+                            }
+                            
+                            return { start: startDate, end: endDate };
+                          } catch (error) {
+                            return {
+                              start: new Date('2020-01-01'),
+                              end: new Date('2020-01-01')
+                            };
+                          }
+                        };
+
+                        const parseMonthYear = (dateStr) => {
+                          if (!dateStr) return new Date('2020-01-01');
+                          
+                          const monthNames = {
+                            'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+                            'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+                          };
+                          
+                          const parts = dateStr.trim().split(' ');
+                          if (parts.length === 2) {
+                            const month = monthNames[parts[0]];
+                            const year = parseInt(parts[1]);
+                            if (month !== undefined && !isNaN(year)) {
+                              return new Date(year, month, 1);
+                            }
+                          }
+                          
+                          return new Date(dateStr);
+                        };
+
+                        const timelineItems = [...RESUME.experience, ...RESUME.research].map(item => ({
+                          ...item,
+                          parsedDates: parseDate(item.dates),
+                          type: RESUME.experience.includes(item) ? 'experience' : 'research'
+                        }));
+
+                        const allDates = timelineItems.flatMap(item => [item.parsedDates.start, item.parsedDates.end]).filter(d => d && !isNaN(d.getTime()));
+                        
+                        if (allDates.length === 0) {
+                          return <div className="text-sm text-slate-500">No timeline data available</div>;
+                        }
+                        
+                        const realDates = allDates.filter(d => d.getFullYear() < 2099);
+                        const presentDates = allDates.filter(d => d.getFullYear() === 2099);
+                        
+                        const minDate = new Date(Math.min(...realDates.map(d => d.getTime())));
+                        const maxDate = presentDates.length > 0 ? new Date() : new Date(Math.max(...realDates.map(d => d.getTime())));
+
+                        const orgColors = [
+                          'bg-blue-500', 'bg-emerald-500', 'bg-violet-500', 'bg-amber-500', 
+                          'bg-rose-500', 'bg-cyan-500', 'bg-lime-500', 'bg-slate-500'
+                        ];
+                        const orgColorMap = {};
+                        let colorIndex = 0;
+                        
+                        const validItems = timelineItems
+                          .filter(item => item.parsedDates && item.parsedDates.start && item.parsedDates.end)
+                          .sort((a, b) => {
+                            if (!a.parsedDates || !b.parsedDates) return 0;
+                            return b.parsedDates.end - a.parsedDates.end;
+                          });
+
+                        validItems.forEach(item => {
+                          if (!orgColorMap[item.org]) {
+                            orgColorMap[item.org] = orgColors[colorIndex % orgColors.length];
+                            colorIndex++;
+                          }
+                        });
+
+                        return (
+                          <div className="space-y-3">
+                            <div className="relative h-6 mb-4">
+                              <div className="absolute inset-0 flex justify-between text-xs text-slate-500 dark:text-slate-400">
+                                <span>{minDate.getFullYear()}</span>
+                                <span>{maxDate.getFullYear()}</span>
+                              </div>
+                            </div>
+
+                            <div className="relative h-12 mb-4">
+                              {validItems.map((item, index) => {
+                                if (!item.parsedDates || !item.parsedDates.start || !item.parsedDates.end) {
+                                  return null;
+                                }
+                                
+                                const endDate = item.parsedDates.end.getFullYear() === 2099 ? new Date() : item.parsedDates.end;
+                                const startOffset = ((item.parsedDates.start - minDate) / (maxDate - minDate)) * 100;
+                                const duration = ((endDate - item.parsedDates.start) / (maxDate - minDate)) * 100;
+                                
+                                const exactOverlaps = validItems.filter(other => 
+                                  other !== item && 
+                                  other.parsedDates &&
+                                  other.parsedDates.start.getTime() === item.parsedDates.start.getTime() &&
+                                  (other.parsedDates.end.getFullYear() === 2099 ? new Date() : other.parsedDates.end).getTime() === endDate.getTime()
+                                );
+                                
+                                const isOverlapping = validItems.some(other => 
+                                  other !== item && 
+                                  other.parsedDates &&
+                                  item.parsedDates.start < (other.parsedDates.end.getFullYear() === 2099 ? new Date() : other.parsedDates.end) && 
+                                  endDate > other.parsedDates.start
+                                );
+
+                                const overlapIndex = exactOverlaps.findIndex(other => 
+                                  validItems.indexOf(other) < validItems.indexOf(item)
+                                );
+                                const verticalOffset = overlapIndex >= 0 ? (overlapIndex + 1) * 4 : 0;
+                                return (
+                                  <motion.div
+                                    key={`${item.role || item.title}-${index}`}
+                                    initial={{ opacity: 0, scaleX: 0 }}
+                                    whileInView={{ opacity: 1, scaleX: 1 }}
+                                    viewport={{ once: true, amount: 0.3 }}
+                                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                                    className={`absolute h-3 rounded-full ${orgColorMap[item.org]} ${
+                                      isOverlapping ? 'opacity-70' : 'opacity-90'
+                                    }`}
+                                    style={{
+                                      left: `${Math.max(0, startOffset)}%`,
+                                      width: `${Math.max(2, duration)}%`,
+                                      top: `calc(50% + ${verticalOffset}px)`,
+                                      transform: 'translateY(-50%)',
+                                      zIndex: isOverlapping ? 1 : 2
+                                    }}
+                                    title={`${item.role || item.title} @ ${item.org} (${item.parsedDates.start.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} - ${item.parsedDates.end.getFullYear() === 2099 ? 'Present' : item.parsedDates.end.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })})`}
+                                  />
+                                );
+                              })}
+                            </div>
+
+                            <div className="space-y-2">
+                              <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">Companies & Research</div>
+                              <div className="grid grid-cols-1 gap-1">
+                                {Object.entries(orgColorMap).map(([org, colorClass]) => {
+                                  const orgItems = validItems.filter(item => item.org === org);
+                                  const latestItem = orgItems[0];
+                                  
+                                  return (
+                                    <div key={org} className="flex items-center gap-2 text-xs">
+                                      <div className={`w-3 h-3 rounded-full ${colorClass} flex-shrink-0`} />
+                                      <div className="flex-1 min-w-0">
+                                        <div className="font-medium text-slate-900 dark:text-slate-100 truncate">
+                                          {org}
+                                        </div>
+                                        <div className="text-slate-500 dark:text-slate-400 truncate">
+                                          {orgItems.map(item => item.role || item.title).join(', ')}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
+                    <h3 className="font-semibold mb-3">Education</h3>
+                    <div className="flex items-start gap-3">
+                      <img 
+                        src="/illini.png" 
+                        alt="University of Illinois" 
+                        className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-slate-900 dark:text-slate-100">
+                          {RESUME.education.degree}
+                        </div>
+                        <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                          {RESUME.education.school}
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                          {RESUME.education.dates}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
                     <h3 className="font-semibold">Quick Contact</h3>
                     <p className="text-sm opacity-80 mt-2">{RESUME.location} • <a className="underline" href={`mailto:${RESUME.email}`}>{RESUME.email}</a></p>
                     <div className="mt-3 flex gap-2">
-                      <a href={RESUME.github} className="text-sm underline">GitHub</a>
-                      <a href={RESUME.linkedin} className="text-sm underline">LinkedIn</a>
+                      <a href={RESUME.github} onClick={() => mark("githubVisited")} className="text-sm underline">GitHub</a>
+                      <a href={RESUME.linkedin} onClick={() => mark("linkedinVisited")} className="text-sm underline">LinkedIn</a>
                     </div>
                     <div className="mt-3 flex gap-2">
                       <button
@@ -700,7 +1120,7 @@ function dynamicSearchAnswer(input) {
                 </aside>
               </main>
 
-            <div className="fixed bottom-4 right-4 z-50">
+            <div className="fixed bottom-4 right-4 z-50 hidden md:block">
               <div className="p-3 rounded-xl shadow-lg bg-white/90 dark:bg-slate-900/90 backdrop-blur border border-slate-200 dark:border-slate-800 min-w-[220px]">
                 <div className="flex items-center justify-between">
                   <div>
