@@ -693,7 +693,7 @@ function dynamicSearchAnswer(input) {
                   <img 
                     src="/1663431050866.jpeg" 
                     alt="Ryed Badr" 
-                    className="w-16 h-16 rounded-full object-cover border-2 border-slate-200 dark:border-slate-700 shadow-sm"
+                    className="hidden md:block w-16 h-16 rounded-full object-cover border-2 border-slate-200 dark:border-slate-700 shadow-sm"
                   />
                   <div>
                     <h1 className="text-2xl font-bold">{RESUME.name}</h1>
