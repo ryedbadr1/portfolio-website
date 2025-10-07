@@ -434,7 +434,7 @@ function dynamicSearchAnswer(input) {
             });
           }
 
-          function markSectionViewed(key) { mark(key); console.log(GEMINI_KEY); }
+          function markSectionViewed(key) { mark(key); }
 
           function completionPercent(map = progressMap) {
             const keys = Object.keys(PROGRESS_TEMPLATE).filter(k => k !== 'siteCompleted');
