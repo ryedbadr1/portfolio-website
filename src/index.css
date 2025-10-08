@@ -89,8 +89,9 @@ html.dark, .dark body { background-color: #0f172a; }
   pointer-events: none;
   z-index: 9999;
   mix-blend-mode: difference;
-  transition: transform 0.1s ease-out;
+  transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  will-change: transform;
 }
 
 .cursor-trail {
@@ -104,7 +105,8 @@ html.dark, .dark body { background-color: #0f172a; }
   pointer-events: none;
   z-index: 9998;
   opacity: 0.6;
-  transition: all 0.3s ease-out;
+  transition: none;
+  will-change: transform;
 }
 
 .cursor-dot {
@@ -117,7 +119,8 @@ html.dark, .dark body { background-color: #0f172a; }
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
-  transition: all 0.1s ease-out;
+  transition: none;
+  will-change: transform;
 }
 
 .cursor-hover {

@@ -390,6 +390,8 @@ function dynamicSearchAnswer(input) {
           const [cursorTrail, setCursorTrail] = useState({ x: 0, y: 0 });
           const [cursorState, setCursorState] = useState('default');
           const [isClicking, setIsClicking] = useState(false);
+          const cursorTrailRef = useRef({ targetX: 0, targetY: 0 });
+          const rafRef = useRef(null);
 
           const aboutRef = useRef(null);
           const expRef = useRef(null);
@@ -525,6 +527,31 @@ function dynamicSearchAnswer(input) {
             }
           }, [progressMap]);
 
+          useEffect(() => {
+            const animateCursorTrail = () => {
+              setCursorTrail((prev) => {
+                const targetX = cursorTrailRef.current.targetX ?? prev.x;
+                const targetY = cursorTrailRef.current.targetY ?? prev.y;
+                
+                const lerp = 0.2;
+                const newX = prev.x + (targetX - prev.x) * lerp;
+                const newY = prev.y + (targetY - prev.y) * lerp;
+                
+                return { x: newX, y: newY };
+              });
+              
+              rafRef.current = requestAnimationFrame(animateCursorTrail);
+            };
+            
+            rafRef.current = requestAnimationFrame(animateCursorTrail);
+            
+            return () => {
+              if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current);
+              }
+            };
+          }, []);
+
           async function submitQuery(e) {
             e?.preventDefault?.();
             if (!query.trim()) return;
@@ -624,9 +651,7 @@ function dynamicSearchAnswer(input) {
 
             setCursor({ x: e.clientX, y: e.clientY });
             
-            setTimeout(() => {
-              setCursorTrail({ x: e.clientX, y: e.clientY });
-            }, 50);
+            cursorTrailRef.current = { targetX: e.clientX, targetY: e.clientY };
           }
 
           function onMouseEnter(e) {
@@ -782,7 +807,7 @@ function dynamicSearchAnswer(input) {
 
               <main className="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <section className="lg:col-span-2 space-y-6">
-                  <motion.div ref={aboutRef} onViewportEnter={() => markSectionViewed("about")} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 200, damping: 18 }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
+                  <motion.div ref={aboutRef} onViewportEnter={() => markSectionViewed("about")} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
                     <h2 className="text-xl font-semibold">About</h2>
                     <p className="mt-2 leading-relaxed text-slate-700 dark:text-slate-300">
                       Hi! I'm <strong>Ryed</strong>, a software engineer who likes building stuff. I have broad experience in full-stack systems,
@@ -795,7 +820,7 @@ function dynamicSearchAnswer(input) {
                     </div>
                   </motion.div>
 
-                  <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.03 }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
+                  <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
                     <h2 className="text-xl font-semibold mb-3">Featured Links</h2>
                     <div className="grid sm:grid-cols-2 gap-4">
                       {[{
@@ -838,7 +863,7 @@ function dynamicSearchAnswer(input) {
                     </div>
                   </motion.div>
 
-                  <motion.div ref={expRef} onViewportEnter={() => markSectionViewed("experience")} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.05 }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
+                  <motion.div ref={expRef} onViewportEnter={() => markSectionViewed("experience")} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
                     <h2 className="text-xl font-semibold mb-3">Experience</h2>
                     <div className="space-y-4">
                       {RESUME.experience.map((exp, i) => (
@@ -859,7 +884,7 @@ function dynamicSearchAnswer(input) {
                     </div>
                   </motion.div>
 
-                  <motion.div ref={researchRef} onViewportEnter={() => markSectionViewed("research")} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.1 }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
+                  <motion.div ref={researchRef} onViewportEnter={() => markSectionViewed("research")} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
                     <h2 className="text-xl font-semibold">Research & Publications</h2>
                     <div className="mt-3 space-y-3">
                       {RESUME.research.map((r, idx) => (
