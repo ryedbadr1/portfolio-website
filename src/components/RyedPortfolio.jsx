@@ -1,6 +1,7 @@
         import React, { useState, useEffect, useRef } from "react";
         import { motion, useScroll, useSpring } from "framer-motion";
         import { Download, Mail, Github, Linkedin } from "lucide-react";
+        import GitHubCalendar from "react-github-calendar";
 
         const RESUME = {
           name: "Ryed Badr",
@@ -392,6 +393,7 @@ function dynamicSearchAnswer(input) {
           const [isClicking, setIsClicking] = useState(false);
           const cursorTrailRef = useRef({ targetX: 0, targetY: 0 });
           const rafRef = useRef(null);
+          const [isDarkMode, setIsDarkMode] = useState(false);
 
           const aboutRef = useRef(null);
           const expRef = useRef(null);
@@ -455,6 +457,24 @@ function dynamicSearchAnswer(input) {
               }
             };
             setTimeout(checkInitialScroll, 100);
+
+            // Check for dark mode
+            const checkDarkMode = () => {
+              setIsDarkMode(document.documentElement.classList.contains('dark') || 
+                           window.matchMedia('(prefers-color-scheme: dark)').matches);
+            };
+            checkDarkMode();
+            const darkModeObserver = new MutationObserver(checkDarkMode);
+            darkModeObserver.observe(document.documentElement, {
+              attributes: true,
+              attributeFilter: ['class']
+            });
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            mediaQuery.addEventListener('change', checkDarkMode);
+            return () => {
+              darkModeObserver.disconnect();
+              mediaQuery.removeEventListener('change', checkDarkMode);
+            };
           }, []);
 
 
@@ -899,7 +919,6 @@ function dynamicSearchAnswer(input) {
                     </div>
                   </motion.div>
 
-
                 </section>
 
                 <aside className="space-y-6">
@@ -1127,6 +1146,34 @@ function dynamicSearchAnswer(input) {
                         </div>
                       </div>
                     </div>
+                  </div>
+
+                  <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">
+                    <h3 className="font-semibold mb-3 text-sm">GitHub Activity</h3>
+                    <div className="overflow-x-auto -mx-2 px-2">
+                      <div className="github-calendar-wrapper github-calendar-compact">
+                        <GitHubCalendar
+                          username={RESUME.github.split('github.com/')[1]?.split('/')[0] || 'ryedbadr1'}
+                          blockSize={10}
+                          blockMargin={2}
+                          fontSize={9}
+                          theme={{
+                            light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
+                            dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
+                          }}
+                          colorScheme={isDarkMode ? 'dark' : 'light'}
+                        />
+                      </div>
+                    </div>
+                    <a 
+                      href={RESUME.github} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      onClick={() => mark("githubVisited")}
+                      className="mt-2 text-xs text-slate-600 dark:text-slate-400 underline hover:text-slate-900 dark:hover:text-slate-200 inline-block"
+                    >
+                      View on GitHub →
+                    </a>
                   </div>
 
                   <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow">

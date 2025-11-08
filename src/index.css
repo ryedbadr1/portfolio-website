@@ -168,3 +168,63 @@ html.dark, .dark body { background-color: #0f172a; }
     display: none !important;
   }
 }
+
+/* GitHub Calendar Styling */
+.github-calendar-wrapper {
+  padding: 1rem 0;
+}
+
+.github-calendar-wrapper svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.github-calendar-wrapper .react-calendar-heatmap text {
+  font-size: 10px;
+  fill: rgb(148, 163, 184);
+}
+
+.dark .github-calendar-wrapper .react-calendar-heatmap text {
+  fill: rgb(148, 163, 184);
+}
+
+.github-calendar-wrapper .react-calendar-heatmap .react-calendar-heatmap-small-text {
+  font-size: 10px;
+}
+
+.github-calendar-wrapper .react-calendar-heatmap rect:hover {
+  stroke: rgb(71, 85, 105);
+  stroke-width: 1px;
+}
+
+.dark .github-calendar-wrapper .react-calendar-heatmap rect:hover {
+  stroke: rgb(203, 213, 225);
+}
+
+/* Compact GitHub Calendar for Sidebar */
+.github-calendar-compact {
+  padding: 0.5rem 0;
+}
+
+.github-calendar-compact svg {
+  width: 100%;
+  height: auto;
+}
+
+.github-calendar-compact .react-calendar-heatmap text {
+  font-size: 8px;
+  fill: rgb(148, 163, 184);
+}
+
+.github-calendar-compact .react-calendar-heatmap .react-calendar-heatmap-small-text {
+  font-size: 8px;
+}
+
+.github-calendar-compact .react-calendar-heatmap rect:hover {
+  stroke: rgb(71, 85, 105);
+  stroke-width: 1px;
+}
+
+.dark .github-calendar-compact .react-calendar-heatmap rect:hover {
+  stroke: rgb(203, 213, 225);
+}
