@@ -37,9 +37,9 @@
               dates: "Jan 2023 – Mar 2025",
               skills: ["C++", "Python", "Git", "MongoDB"],
               bullets: [
-                "Led a hedge fund of 8 people centered on automated, algorithmic trading models",
-                "Developed base trading models and led quant engineers to optimize these strategies with AI",
-                "Generated 24% ROI in one week and 80% ROI in the first year after development while managing a $50K+ fund",
+                "Led a team of 8 researchers and developers building automated trading models dynamically optimized through real-time AI-driven market analysis",
+                "Founded and developed a quantitative investment fund concept leveraging algorithms to aggregate and analyze financial data from 3,500+ publicly traded companies",
+                "Backtested quantitative trading strategies achieving 28% simulated returns during testing and model validation",
               ],
             },
             {
